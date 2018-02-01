@@ -46,7 +46,7 @@ async function handler(request) {
 
 const server = createServer(compose(
   adapt,
-  handleErrors
+  handleErrors()
 )(handler))
 
 server.listen(3000)
