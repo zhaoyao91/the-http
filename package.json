@@ -1,0 +1,18 @@
+{
+  "name": "the-http",
+  "version": "0.1.0",
+  "description": "the way we build http service",
+  "repository": "https://github.com/zhaoyao91/the-http",
+  "main": "index.js",
+  "keywords": [
+    "http",
+    "micro service"
+  ],
+  "author": "zhaoyao91 <zhaoyao91@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "http-status": "^1.0.1",
+    "is-stream": "^1.1.0",
+    "raw-body": "^2.3.2"
+  }
+}
