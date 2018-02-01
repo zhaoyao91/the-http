@@ -19,8 +19,8 @@ The way we build HTTP service.
 - More
   - [Motivation](./docs/motivation.md)
   - Tutorials
-    - create a hello-world service
-    - create an authentication service
+    - create a service 1 (hello-world)
+    - create a service 2 (password-checking)
     - create customized error handler
     - create a downward wrapper
     - create a upward wrapper
