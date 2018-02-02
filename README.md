@@ -39,9 +39,8 @@ const {createServer} = require('http')
 const {Response, compose, adapt, handleErrors} = require('the-http') 
 
 async function handler(request) {
-  const body = await request.body.fetch()
-  const {name, age} = body.json
-  return Response.fromTextBody(`Hello ${name}, you are ${age} years old.`)
+  const {name, age} = await request.body.json()
+  return Response.withTextBody(`Hello ${name}, you are ${age} years old.`)
 }
 
 const server = createServer(compose(
