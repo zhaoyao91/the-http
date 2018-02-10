@@ -1,3 +1,4 @@
+const listen = require('./lib/listen')
 const adapt = require('./lib/adapt')
 const compose = require('./lib/compose')
 
@@ -13,6 +14,7 @@ const buildUpwardWrapper = require('./lib/build-upward-wrapper')
 const handleErrors = require('./lib/wrappers/handle-errors')
 
 module.exports = {
+  listen,
   adapt,
   compose,
   HTTPError,
