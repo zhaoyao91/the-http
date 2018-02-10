@@ -22,7 +22,7 @@ npm i --save the-http
 const {Response, compose, handleErrors, listen} = require('the-http') 
 
 async function handler(request) {
-  const {name, age} = await request.body.json()
+  const {name, age} = await request.body.asJSON()
   return Response.withJSONBody({
     isAdult: age >= 18,
     message: `Hello ${name}`
