@@ -71,6 +71,5 @@ MIT
 
 ## Todo
 
-- write tutorials
 - write api docs
 - release v1
