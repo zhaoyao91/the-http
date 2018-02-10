@@ -24,7 +24,7 @@ Create an http server and listen for requests.
 
 **Class**
 
-Represent a Http request body.
+Represent a HTTP request body.
 
 - `get stream` - the raw body readable stream
 - `async asBuffer(options?): Buffer` - get the raw body as buffer
@@ -56,7 +56,7 @@ Represent a HTTP response.
 
 - `set statusCode(code: Number)`
 - `get statusCode: Number` 
-- `set headers(headers: Object)` - generally you should use `setHeader` to avoid duplicate header. but if you know what you are doing, you can use this setter to update headers more effectively
+- `set headers(headers: Object)` - generally you should use `setHeader` to avoid duplicate header. but if you know what you are doing, you can use this setter to update headers more efficiently
 - `get headers: Object`
 - `set body(body: String|Buffer|ReadableStream)`
 - `get body: body`
@@ -64,10 +64,10 @@ Represent a HTTP response.
 - `getHeader(name: String): value`
 - `static withStatusCode(statusCode, message?): Response` - build a response with given status code
   - `message?` - if not provided, it will be set as the standard error message of this status code
-- `static withBufferBody(body: Buffer): Response` - build a response with given buffer body. the content-type header will be set as 'application/octet-stream'
-- `static withStreamBody(body: ReadableStream): Response` - build a response with given stream body. the content-type header will be set as 'application/octet-stream'
-- `static withTextBody(body: Any): Response` - build a response with given text body. the body could be of any type, but it will be converted into string. the content-type header will be set as 'text/plain; charset=utf-8'
-- `static withJSONBody(body: Any): Response` - build a response with given JSON body. the body could be of any type, but it will be converted into JSON string. the content-type header will be set as 'application/json; charset=utf-8'
+- `static withBufferBody(body: Buffer): Response` - build a response with given buffer body. the content-type header will be set as `application/octet-stream`
+- `static withStreamBody(body: ReadableStream): Response` - build a response with given stream body. the content-type header will be set as `application/octet-stream`
+- `static withTextBody(body: Any): Response` - build a response with given text body. the body could be of any type, but it will be converted into string. the content-type header will be set as `text/plain; charset=utf-8`
+- `static withJSONBody(body: Any): Response` - build a response with given JSON body. the body could be of any type, but it will be converted into JSON string. the content-type header will be set as `application/json; charset=utf-8`
 
 ## Advanced Components
 
@@ -93,7 +93,7 @@ It returns a response based on the parsed status code and message. And if the er
 
 **Function**: `(handler) => nodeHttpHandler`
 
-Convert a TH handler into a node http handler.
+Convert a TH handler into a node.js http handler.
 
 ### HTTPError
 

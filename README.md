@@ -44,6 +44,8 @@ const enhancedHandler = compose(
 listen(3000)(enhancedHandler)
 ```
 
+See [RequestBody](./docs/api.md#requestbody), [Request](./docs/api.md#request), [Response](./docs/api.md#response) and more in [API doc](./docs/api.md).
+
 ## License
 
 MIT
