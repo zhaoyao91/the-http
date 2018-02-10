@@ -2,29 +2,13 @@
 
 The way we build HTTP service.
 
-## Introduction
+## Features
 
 - **Modern**: Using `async/await` instead of `callback`
 - **Simple**: Simple function model: `async (request) => response`
 - **Extensible**: Via making and composing intuitive wrappers
 - **Standard**: Just HTTP
 - **Micro**: Suitable for micro service
-
-## Catalog
-
-- [Install](#install)
-- [Getting started](#getting-started)
-- [Core concepts](#core-concepts)
-- [API](#api)
-- More
-  - [Motivation](./docs/motivation.md)
-  - Tutorials
-    - create a service 1 (hello-world)
-    - create a service 2 (password-checking)
-    - create customized error handler
-    - create a downward wrapper
-    - create a upward wrapper
-    - create a advanced wrapper
 
 ## Install
 
@@ -35,29 +19,22 @@ npm i --save the-http
 ## Getting Started
 
 ```ecmascript 6
-const {createServer} = require('http')
-const {Response, compose, adapt, handleErrors} = require('the-http') 
+const {Response, compose, handleErrors, listen} = require('the-http') 
 
 async function handler(request) {
   const {name, age} = await request.body.json()
-  return Response.withTextBody(`Hello ${name}, you are ${age} years old.`)
+  return Response.withJSONBody({
+    isAdult: age >= 18,
+    message: `Hello ${name}`
+  })
 }
 
-const server = createServer(compose(
-  adapt,
+const enhancedHandler = compose(
   handleErrors()
-)(handler))
+)(handler)
 
-server.listen(3000)
+listen(3000)(enhancedHandler)
 ```
-
-## Core Concepts
-
-- Request - represent HTTP request
-- Response - represent HTTP response
-- Context - plain js object, used to hold the outputs of wrappers
-- Handler (or THHandler) - `async (Request, Context) => Response`
-- Wrapper (or THWrapper) - `(Handler) => Handler`
 
 ## API
 
@@ -71,6 +48,22 @@ server.listen(3000)
 - [buildDownwardWrapper](./lib/build-downward-wrapper.js) - build a wrapper which could handle the downward logic
 - [buildUpwardWrapper](./lib/build-upward-wrapper.js) - build a wrapper which could handle the upward logic
 - [handleErrors](./lib/wrappers/handle-errors.js) - default error handler wrapper shipped with this package
+
+## Motivation
+
+Why yet another HTTP toolkit? We already have [express](https://expressjs.com/), [koa](http://koajs.com/), 
+[micro](https://github.com/zeit/micro), and [node http](https://nodejs.org/docs/latest-v8.x/api/http.html), but all of 
+them apply a side-effect handling model, say, user handles the request by manipulating the response object. This is 
+neither intuitive nor convenient, because it doesn't match the http request-response (RR) handling model, which is just 
+a simple function: 
+
+```
+async (request) => response
+```
+
+By applying such a model, handling http request becomes straight forward. Extending the handler also becomes simple and 
+easy, with no magic, by just composing wrappers, as what 
+[recompose](https://github.com/acdlite/recompose) do to React.
 
 ## License
 
