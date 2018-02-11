@@ -377,7 +377,7 @@ but if it returns a response, the flow will return right here, and the handlers 
 
 ### buildDownwardWrapper~DownwardHandler : <code>function</code>
 **Kind**: inner typedef of [<code>buildDownwardWrapper</code>](#buildDownwardWrapper)  
-**Prototype**: async (request: Request) => Request|Response  
+**Prototype**: `async (request: Request) => Request|Response`  
 **See**
 
 - [Request](#Request)
@@ -398,7 +398,7 @@ Build a wrapper which could handle the error logic.
 
 ### buildErrorWrapper~ErrorHandler : <code>function</code>
 **Kind**: inner typedef of [<code>buildErrorWrapper</code>](#buildErrorWrapper)  
-**Prototype**: async (error: Error, request: Request) => Response  
+**Prototype**: `async (error: Error, request: Request) => Response`  
 **See**
 
 - [Request](#Request)
@@ -420,7 +420,7 @@ Generally it maps response.
 
 ### buildUpwardWrapper~UpwardHandler : <code>function</code>
 **Kind**: inner typedef of [<code>buildUpwardWrapper</code>](#buildUpwardWrapper)  
-**Prototype**: async (response: Response, request: Request) => Response  
+**Prototype**: `async (response: Response, request: Request) => Response`  
 **See**
 
 - [Request](#Request)
@@ -443,7 +443,7 @@ Compose wrappers
 Create a http server and listen for connections.
 
 **Kind**: global function  
-**Prototype**: (...args) => (handler: THHandler) => NodeHTTPServer  
+**Prototype**: `(...args) => (handler: THHandler) => NodeHTTPServer`  
 **See**
 
 - [THHandler](#THHandler)
@@ -458,10 +458,10 @@ If it's not a http client error, then log it.
 
 **Kind**: global function  
 
-| Param | Default |
-| --- | --- |
-| [options] |  | 
-| [options.logError] | <code>console.error</code> | 
+| Param | Type | Default |
+| --- | --- | --- |
+| [options] | <code>Object</code> |  | 
+| [options.logError] | <code>function</code> | <code>console.error</code> | 
 
 <a name="THHandler"></a>
 
@@ -477,11 +477,11 @@ If it's not a http client error, then log it.
 
 ## NodeHTTPHandler : <code>function</code>
 **Kind**: global typedef  
-**Prototype**: (req, res) =>  
+**Prototype**: `(req, res) =>`  
 **See**: [Node.js create server](https://nodejs.org/docs/latest-v8.x/api/http.html#http_http_createserver_requestlistener)  
 <a name="THWrapper"></a>
 
 ## THWrapper : <code>function</code>
 **Kind**: global typedef  
-**Prototype**: (handler: THHandler) => THHandler  
+**Prototype**: `(handler: THHandler) => THHandler`  
 **See**: [THHandler](#THHandler)  
