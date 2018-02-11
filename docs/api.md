@@ -1,128 +1,487 @@
-# API
+## Classes
 
-## Core Concepts
+<dl>
+<dt><a href="#HTTPError">HTTPError</a></dt>
+<dd><p>Represent a HTTP error with status code and message.</p>
+</dd>
+<dt><a href="#RequestBody">RequestBody</a></dt>
+<dd><p>Represent the body (payload or data) of a HTTP request.
+You can handle it via the stream field
+or fetch and use it as buffer, text or json via the provided helpers</p>
+</dd>
+<dt><a href="#Request">Request</a></dt>
+<dd><p>Represent a HTTP request.</p>
+</dd>
+<dt><a href="#Response">Response</a></dt>
+<dd><p>Represent a HTTP response.
+By default, a response is just like a plain object with some default values.
+You can create a response and set it on your own.
+However, it&#39;s usually convenient and better to use the static builders to build a proper initial response
+and make any needed adjustment to it.</p>
+</dd>
+</dl>
 
-### Handler
+## Functions
 
-**Function**: `async (Request) => Response `
+<dl>
+<dt><a href="#adapt">adapt(handler)</a> ⇒ <code><a href="#NodeHTTPHandler">NodeHTTPHandler</a></code></dt>
+<dd><p>Convert a TH handler into a node HTTP handler.</p>
+</dd>
+<dt><a href="#buildDownwardWrapper">buildDownwardWrapper(downwardHandler)</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dd><p>Build a wrapper which could handle the downward logic.
+Generally it maps request (context),
+but if it returns a response, the flow will return right here, and the handlers below will be ignored.</p>
+</dd>
+<dt><a href="#buildErrorWrapper">buildErrorWrapper(errorHandler)</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dd><p>Build a wrapper which could handle the error logic.</p>
+</dd>
+<dt><a href="#buildUpwardWrapper">buildUpwardWrapper(upwardHandler)</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dd><p>Build a wrapper which could handle the upward logic.
+Generally it maps response.</p>
+</dd>
+<dt><a href="#compose">compose(...wrappers)</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dd><p>Compose wrappers</p>
+</dd>
+<dt><a href="#listen">listen()</a> : <code>function</code></dt>
+<dd><p>Create a http server and listen for connections.</p>
+</dd>
+<dt><a href="#handleErrors">handleErrors([options])</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dd><p>Provided default error handler wrapper.
+Generate response from the error and return it.
+If it&#39;s not a http client error, then log it.</p>
+</dd>
+</dl>
 
-### Wrapper
+## Typedefs
 
-**Function**: `(handler) => handler`
+<dl>
+<dt><a href="#THHandler">THHandler</a> : <code>function</code></dt>
+<dd></dd>
+<dt><a href="#NodeHTTPHandler">NodeHTTPHandler</a> : <code>function</code></dt>
+<dd></dd>
+<dt><a href="#THWrapper">THWrapper</a> : <code>function</code></dt>
+<dd></dd>
+</dl>
 
-## Basic Components
+<a name="HTTPError"></a>
 
-### listen
+## HTTPError
+Represent a HTTP error with status code and message.
 
-**Function**: `(...args) => (handler) => server`
+**Kind**: global class  
+<a name="new_HTTPError_new"></a>
 
-Create an http server and listen for requests.
+### new HTTPError([statusCode], [message], [originalError])
 
-- `args` - see [http server](https://nodejs.org/api/http.html#http_server_listen).
+| Param | Type |
+| --- | --- |
+| [statusCode] | <code>number</code> | 
+| [message] | <code>string</code> | 
+| [originalError] | <code>Error</code> | 
 
-### RequestBody
+<a name="RequestBody"></a>
 
-**Class**
+## RequestBody
+Represent the body (payload or data) of a HTTP request.
+You can handle it via the stream field
+or fetch and use it as buffer, text or json via the provided helpers
 
-Represent a HTTP request body.
+**Kind**: global class  
 
-- `get stream` - the raw body readable stream
-- `async asBuffer(options?): Buffer` - get the raw body as buffer
-  - `options.limit?=1mb` - max size of the raw body, see [raw-body](https://github.com/stream-utils/raw-body#getrawbodystream-options-callback)
-- `async asText(options?): String` - get the raw body as string
-- `async asJSON(options?): Any` - get the raw body as JSON object
+* [RequestBody](#RequestBody)
+    * [.stream](#RequestBody+stream) : <code>ReadableStream</code>
+    * [.asBuffer([options])](#RequestBody+asBuffer) ⇒ <code>Promise.&lt;Buffer&gt;</code>
+    * [.asText([options])](#RequestBody+asText) ⇒ <code>Promise.&lt;string&gt;</code>
+    * [.asJSON([options])](#RequestBody+asJSON) ⇒ <code>Promise.&lt;\*&gt;</code>
 
-### Request
+<a name="RequestBody+stream"></a>
 
-**Class**
+### requestBody.stream : <code>ReadableStream</code>
+**Kind**: instance property of [<code>RequestBody</code>](#RequestBody)  
+<a name="RequestBody+asBuffer"></a>
 
+### requestBody.asBuffer([options]) ⇒ <code>Promise.&lt;Buffer&gt;</code>
+get the body as buffer
+
+**Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [options] | <code>Object</code> |  | 
+| [options.limit] | <code>string</code> | <code>&quot;1mb&quot;</code> | 
+
+<a name="RequestBody+asText"></a>
+
+### requestBody.asText([options]) ⇒ <code>Promise.&lt;string&gt;</code>
+get the body as string
+
+**Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [options] | <code>Object</code> |  | 
+| [options.limit] | <code>string</code> | <code>&quot;1mb&quot;</code> | 
+
+<a name="RequestBody+asJSON"></a>
+
+### requestBody.asJSON([options]) ⇒ <code>Promise.&lt;\*&gt;</code>
+get the body as JSON object
+
+**Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [options] | <code>Object</code> |  | 
+| [options.limit] | <code>string</code> | <code>&quot;1mb&quot;</code> | 
+
+<a name="Request"></a>
+
+## Request
 Represent a HTTP request.
 
-- `get httpVersion: String`
-- `get method: String`
-- `get url: String`
-- `get query: String`
-- `get headers: Object` - see [message.headers](https://nodejs.org/api/http.html#http_message_headers)
-- `get body: RequestBody` - see [RequestBody](#requestbody)
-- `get parsedUrl: Object` - result of [url.parse](https://nodejs.org/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost)
-- `get parsedQuery: Object` - result of [querystring.parse](https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options)
-- `context: Object` - a plain js object used to hold wrapper-generated information
+**Kind**: global class  
 
-### Response
+* [Request](#Request)
+    * [.httpVersion](#Request+httpVersion) : <code>string</code>
+    * [.method](#Request+method) : <code>string</code>
+    * [.url](#Request+url) : <code>string</code>
+    * [.query](#Request+query) : <code>string</code>
+    * [.headers](#Request+headers) : <code>Object</code>
+    * [.body](#Request+body) : [<code>RequestBody</code>](#RequestBody)
+    * [.parsedUrl](#Request+parsedUrl) : <code>Object</code>
+    * [.parsedQuery](#Request+parsedQuery) : <code>Object</code>
 
-**Class**
+<a name="Request+httpVersion"></a>
 
+### request.httpVersion : <code>string</code>
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+method"></a>
+
+### request.method : <code>string</code>
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+url"></a>
+
+### request.url : <code>string</code>
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+query"></a>
+
+### request.query : <code>string</code>
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+headers"></a>
+
+### request.headers : <code>Object</code>
+**Kind**: instance property of [<code>Request</code>](#Request)  
+**See**: [headers](https://nodejs.org/docs/latest-v8.x/api/http.html#http_message_headers)  
+<a name="Request+body"></a>
+
+### request.body : [<code>RequestBody</code>](#RequestBody)
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+parsedUrl"></a>
+
+### request.parsedUrl : <code>Object</code>
+Url object parsed by [url](https://nodejs.org/docs/latest-v8.x/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost).
+
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Request+parsedQuery"></a>
+
+### request.parsedQuery : <code>Object</code>
+Query object parsed by [querystring](https://nodejs.org/docs/latest-v8.x/api/querystring.html#querystring_querystring_parse_str_sep_eq_options).
+
+**Kind**: instance property of [<code>Request</code>](#Request)  
+<a name="Response"></a>
+
+## Response
 Represent a HTTP response.
+By default, a response is just like a plain object with some default values.
+You can create a response and set it on your own.
+However, it's usually convenient and better to use the static builders to build a proper initial response
+and make any needed adjustment to it.
 
-- `set statusCode(code: Number)`
-- `get statusCode: Number` 
-- `set headers(headers: Object)` - generally you should use `setHeader` to avoid duplicate header. but if you know what you are doing, you can use this setter to update headers more efficiently
-- `get headers: Object`
-- `set body(body: String|Buffer|ReadableStream)`
-- `get body: body`
-- `setHeader(name: String, value: String|String[])` - the name will be converted into lower case
-- `getHeader(name: String): value`
-- `static withStatusCode(statusCode, message?): Response` - build a response with given status code
-  - `message?` - if not provided, it will be set as the standard error message of this status code
-- `static withBufferBody(body: Buffer): Response` - build a response with given buffer body. the content-type header will be set as `application/octet-stream`
-- `static withStreamBody(body: ReadableStream): Response` - build a response with given stream body. the content-type header will be set as `application/octet-stream`
-- `static withTextBody(body: Any): Response` - build a response with given text body. the body could be of any type, but it will be converted into string. the content-type header will be set as `text/plain; charset=utf-8`
-- `static withJSONBody(body: Any): Response` - build a response with given JSON body. the body could be of any type, but it will be converted into JSON string. the content-type header will be set as `application/json; charset=utf-8`
+**Kind**: global class  
 
-## Advanced Components
+* [Response](#Response)
+    * _instance_
+        * [.statusCode=](#Response+statusCode=)
+        * [.statusCode](#Response+statusCode) : <code>number</code>
+        * [.headers=](#Response+headers=)
+        * [.headers](#Response+headers) : <code>Object</code>
+        * [.body=](#Response+body=)
+        * [.body](#Response+body) : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
+        * [.setHeader(name, value)](#Response+setHeader)
+        * [.getHeader(name)](#Response+getHeader) ⇒ <code>string</code> \| <code>Array.&lt;string&gt;</code>
+    * _static_
+        * [.withStatusCode(statusCode, [message])](#Response.withStatusCode) ⇒ [<code>Response</code>](#Response)
+        * [.withBufferBody(bufferBody)](#Response.withBufferBody) ⇒ [<code>Response</code>](#Response)
+        * [.withStreamBody(streamBody)](#Response.withStreamBody) ⇒ [<code>Response</code>](#Response)
+        * [.withTextBody(textBody)](#Response.withTextBody) ⇒ [<code>Response</code>](#Response)
+        * [.withJSONBody(jsonBody)](#Response.withJSONBody) ⇒ [<code>Response</code>](#Response)
 
-### compose
+<a name="Response+statusCode="></a>
 
-**Function**: `(...wrappers) => wrapper`
+### response.statusCode=
+**Kind**: instance property of [<code>Response</code>](#Response)  
 
-Simple compose function to help compose wrappers.
+| Param | Type | Description |
+| --- | --- | --- |
+| code | <code>number</code> | within [100, 600) |
 
-### handleErrors
+<a name="Response+statusCode"></a>
 
-**Function** `(options?) => wrapper`
+### response.statusCode : <code>number</code>
+**Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+headers="></a>
 
-Default error handler shipped with this package.
+### response.headers=
+Set the whole headers object.
+Generally you should use `setHeader` to avoid duplicate headers,
+but if you know what you are doing, you can use this setter to update headers more efficiently.
 
-If the error is an instance of HTTP Error, it will parse the status code and message, otherwise 500 will be generated.
+**Kind**: instance property of [<code>Response</code>](#Response)  
 
-It returns a response based on the parsed status code and message. And if the error is not a client error, it will also try to log it. 
+| Param | Type |
+| --- | --- |
+| headers | <code>Object</code> | 
 
-- `options.logError?` - the error logger function. if false, errors will not be logged
+<a name="Response+headers"></a>
 
-### adapt
+### response.headers : <code>Object</code>
+**Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+body="></a>
 
-**Function**: `(handler) => nodeHttpHandler`
+### response.body=
+**Kind**: instance property of [<code>Response</code>](#Response)  
 
-Convert a TH handler into a node.js http handler.
+| Param | Type |
+| --- | --- |
+| body | <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code> | 
 
-### HTTPError
+<a name="Response+body"></a>
 
-**Class**
+### response.body : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
+**Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+setHeader"></a>
 
-Represent a http error that should be present to client.
+### response.setHeader(name, value)
+Set the header value of given header name.
+The name will be converted to lowercase to avoid duplication.
 
-- `constructor(statusCode?, message?, originalError?)`
+**Kind**: instance method of [<code>Response</code>](#Response)  
 
-### buildErrorWrapper
+| Param | Type |
+| --- | --- |
+| name | <code>string</code> | 
+| value | <code>string</code> \| <code>Array.&lt;string&gt;</code> | 
 
-**Function**: (errorHandler) => wrapper
+<a name="Response+getHeader"></a>
 
+### response.getHeader(name) ⇒ <code>string</code> \| <code>Array.&lt;string&gt;</code>
+Return the header value of given header name.
+
+**Kind**: instance method of [<code>Response</code>](#Response)  
+
+| Param | Type |
+| --- | --- |
+| name | <code>string</code> | 
+
+<a name="Response.withStatusCode"></a>
+
+### Response.withStatusCode(statusCode, [message]) ⇒ [<code>Response</code>](#Response)
+Build a response with given status code.
+The body will be set as the corresponding status text if not provided
+
+**Kind**: static method of [<code>Response</code>](#Response)  
+
+| Param | Type |
+| --- | --- |
+| statusCode | <code>number</code> | 
+| [message] | <code>string</code> | 
+
+<a name="Response.withBufferBody"></a>
+
+### Response.withBufferBody(bufferBody) ⇒ [<code>Response</code>](#Response)
+Build a response with given buffer body.
+The content-type header will be set as 'application/octet-stream'.
+
+**Kind**: static method of [<code>Response</code>](#Response)  
+
+| Param | Type |
+| --- | --- |
+| bufferBody | <code>Buffer</code> | 
+
+<a name="Response.withStreamBody"></a>
+
+### Response.withStreamBody(streamBody) ⇒ [<code>Response</code>](#Response)
+Build a response with given stream body.
+The content-type header will be set as 'application/octet-stream'.
+
+**Kind**: static method of [<code>Response</code>](#Response)  
+**Returns**: [<code>Response</code>](#Response) - response  
+
+| Param | Type |
+| --- | --- |
+| streamBody | <code>ReadableStream</code> | 
+
+<a name="Response.withTextBody"></a>
+
+### Response.withTextBody(textBody) ⇒ [<code>Response</code>](#Response)
+Build a response with given text body.
+The body could be of any type, but it will be converted into string.
+The content-type header will be set as 'text/plain; charset=utf-8'.
+
+**Kind**: static method of [<code>Response</code>](#Response)  
+**Returns**: [<code>Response</code>](#Response) - response  
+
+| Param |
+| --- |
+| textBody | 
+
+<a name="Response.withJSONBody"></a>
+
+### Response.withJSONBody(jsonBody) ⇒ [<code>Response</code>](#Response)
+Build a response with given JSON body.
+The body could be of any type, but it will be converted into JSON string.
+The content-type header will be set as 'application/json; charset=utf-8'.
+
+**Kind**: static method of [<code>Response</code>](#Response)  
+**Returns**: [<code>Response</code>](#Response) - response  
+
+| Param |
+| --- |
+| jsonBody | 
+
+<a name="adapt"></a>
+
+## adapt(handler) ⇒ [<code>NodeHTTPHandler</code>](#NodeHTTPHandler)
+Convert a TH handler into a node HTTP handler.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| handler | [<code>THHandler</code>](#THHandler) | 
+
+<a name="buildDownwardWrapper"></a>
+
+## buildDownwardWrapper(downwardHandler) ⇒ [<code>THWrapper</code>](#THWrapper)
+Build a wrapper which could handle the downward logic.
+Generally it maps request (context),
+but if it returns a response, the flow will return right here, and the handlers below will be ignored.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| downwardHandler | [<code>DownwardHandler</code>](#buildDownwardWrapper..DownwardHandler) | 
+
+<a name="buildDownwardWrapper..DownwardHandler"></a>
+
+### buildDownwardWrapper~DownwardHandler : <code>function</code>
+**Kind**: inner typedef of [<code>buildDownwardWrapper</code>](#buildDownwardWrapper)  
+**Prototype**: async (request: Request) => Request|Response  
+**See**
+
+- [Request](#Request)
+- [Response](#Response)
+
+<a name="buildErrorWrapper"></a>
+
+## buildErrorWrapper(errorHandler) ⇒ [<code>THWrapper</code>](#THWrapper)
 Build a wrapper which could handle the error logic.
 
-- `errorHandler` - `async (err, request) => response`
+**Kind**: global function  
 
-### buildDownwardWrapper
+| Param | Type |
+| --- | --- |
+| errorHandler | [<code>ErrorHandler</code>](#buildErrorWrapper..ErrorHandler) | 
 
-**Function**: (downwardHandler) => wrapper
+<a name="buildErrorWrapper..ErrorHandler"></a>
 
-Build a wrapper which could handle the downward logic. Generally it maps request (context). But if it returns a response, the flow will return right from here, and the handlers below will be ignored
+### buildErrorWrapper~ErrorHandler : <code>function</code>
+**Kind**: inner typedef of [<code>buildErrorWrapper</code>](#buildErrorWrapper)  
+**Prototype**: async (error: Error, request: Request) => Response  
+**See**
 
-- `downwardHanlder` - `async (request) => request | response`
+- [Request](#Request)
+- [Response](#Response)
 
-### buildUpwardWrapper
+<a name="buildUpwardWrapper"></a>
 
-**Function** (upwardHandler) => wrapper
+## buildUpwardWrapper(upwardHandler) ⇒ [<code>THWrapper</code>](#THWrapper)
+Build a wrapper which could handle the upward logic.
+Generally it maps response.
 
-Build a wrapper which could handle the upward logic. Generally it maps response.
+**Kind**: global function  
 
-- `upwardHandler` - `async (response, request) => response` 
+| Param | Type |
+| --- | --- |
+| upwardHandler | [<code>UpwardHandler</code>](#buildUpwardWrapper..UpwardHandler) | 
+
+<a name="buildUpwardWrapper..UpwardHandler"></a>
+
+### buildUpwardWrapper~UpwardHandler : <code>function</code>
+**Kind**: inner typedef of [<code>buildUpwardWrapper</code>](#buildUpwardWrapper)  
+**Prototype**: async (response: Response, request: Request) => Response  
+**See**
+
+- [Request](#Request)
+- [Response](#Response)
+
+<a name="compose"></a>
+
+## compose(...wrappers) ⇒ [<code>THWrapper</code>](#THWrapper)
+Compose wrappers
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| ...wrappers | [<code>Array.&lt;THWrapper&gt;</code>](#THWrapper) | 
+
+<a name="listen"></a>
+
+## listen() : <code>function</code>
+Create a http server and listen for connections.
+
+**Kind**: global function  
+**Prototype**: (...args) => (handler: THHandler) => NodeHTTPServer  
+**See**
+
+- [THHandler](#THHandler)
+- [Node.js server.listen](https://nodejs.org/docs/latest-v8.x/api/http.html#http_server_listen)
+
+<a name="handleErrors"></a>
+
+## handleErrors([options]) ⇒ [<code>THWrapper</code>](#THWrapper)
+Provided default error handler wrapper.
+Generate response from the error and return it.
+If it's not a http client error, then log it.
+
+**Kind**: global function  
+
+| Param | Default |
+| --- | --- |
+| [options] |  | 
+| [options.logError] | <code>console.error</code> | 
+
+<a name="THHandler"></a>
+
+## THHandler : <code>function</code>
+**Kind**: global typedef  
+**Prototype**: async (request: Request) => Response  
+**See**
+
+- [Request](#Request)
+- [Response](#Response)
+
+<a name="NodeHTTPHandler"></a>
+
+## NodeHTTPHandler : <code>function</code>
+**Kind**: global typedef  
+**Prototype**: (req, res) =>  
+**See**: [Node.js create server](https://nodejs.org/docs/latest-v8.x/api/http.html#http_http_createserver_requestlistener)  
+<a name="THWrapper"></a>
+
+## THWrapper : <code>function</code>
+**Kind**: global typedef  
+**Prototype**: (handler: THHandler) => THHandler  
+**See**: [THHandler](#THHandler)  

@@ -1,9 +1,12 @@
 {
   "name": "the-http",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "The way we build HTTP service.",
   "repository": "https://github.com/zhaoyao91/the-http",
   "main": "index.js",
+  "scripts": {
+    "docs": "jsdoc2md lib/* lib/helpers/* lib/wrappers/* > docs/api.md"
+  },
   "keywords": [
     "http",
     "micro service"
@@ -14,5 +17,8 @@
     "http-status": "^1.0.1",
     "is-stream": "^1.1.0",
     "raw-body": "^2.3.2"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^4.0.1"
   }
 }
