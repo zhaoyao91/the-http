@@ -101,7 +101,7 @@ or fetch and use it as buffer, text or json via the provided helpers
 <a name="RequestBody+asBuffer"></a>
 
 ### requestBody.asBuffer([options]) ⇒ <code>Promise.&lt;Buffer&gt;</code>
-get the body as buffer
+Get the body as buffer.
 
 **Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
 
@@ -113,7 +113,7 @@ get the body as buffer
 <a name="RequestBody+asText"></a>
 
 ### requestBody.asText([options]) ⇒ <code>Promise.&lt;string&gt;</code>
-get the body as string
+Get the body as string.
 
 **Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
 
@@ -125,7 +125,7 @@ get the body as string
 <a name="RequestBody+asJSON"></a>
 
 ### requestBody.asJSON([options]) ⇒ <code>Promise.&lt;\*&gt;</code>
-get the body as JSON object
+Get the body as JSON object.
 
 **Kind**: instance method of [<code>RequestBody</code>](#RequestBody)  
 
@@ -200,12 +200,10 @@ and make any needed adjustment to it.
 **Kind**: global class  
 
 * [Response](#Response)
+    * [new Response()](#new_Response_new)
     * _instance_
-        * [.statusCode=](#Response+statusCode=)
         * [.statusCode](#Response+statusCode) : <code>number</code>
-        * [.headers=](#Response+headers=)
         * [.headers](#Response+headers) : <code>Object</code>
-        * [.body=](#Response+body=)
         * [.body](#Response+body) : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
         * [.setHeader(name, value)](#Response+setHeader)
         * [.getHeader(name)](#Response+getHeader) ⇒ <code>string</code> \| <code>Array.&lt;string&gt;</code>
@@ -216,48 +214,31 @@ and make any needed adjustment to it.
         * [.withTextBody(textBody)](#Response.withTextBody) ⇒ [<code>Response</code>](#Response)
         * [.withJSONBody(jsonBody)](#Response.withJSONBody) ⇒ [<code>Response</code>](#Response)
 
-<a name="Response+statusCode="></a>
+<a name="new_Response_new"></a>
 
-### response.statusCode=
-**Kind**: instance property of [<code>Response</code>](#Response)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| code | <code>number</code> | within [100, 600) |
+### new Response()
+Create a new response and set the default fields
 
 <a name="Response+statusCode"></a>
 
 ### response.statusCode : <code>number</code>
-**Kind**: instance property of [<code>Response</code>](#Response)  
-<a name="Response+headers="></a>
+Status code of this response.
+The range is [100, 600)
 
-### response.headers=
-Set the whole headers object.
+**Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+headers"></a>
+
+### response.headers : <code>Object</code>
+Headers of this response.
 Generally you should use `setHeader` to avoid duplicate headers,
 but if you know what you are doing, you can use this setter to update headers more efficiently.
 
 **Kind**: instance property of [<code>Response</code>](#Response)  
-
-| Param | Type |
-| --- | --- |
-| headers | <code>Object</code> | 
-
-<a name="Response+headers"></a>
-
-### response.headers : <code>Object</code>
-**Kind**: instance property of [<code>Response</code>](#Response)  
-<a name="Response+body="></a>
-
-### response.body=
-**Kind**: instance property of [<code>Response</code>](#Response)  
-
-| Param | Type |
-| --- | --- |
-| body | <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code> | 
-
 <a name="Response+body"></a>
 
 ### response.body : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
+Body of this response.
+
 **Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="Response+setHeader"></a>
 
