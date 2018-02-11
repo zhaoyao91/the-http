@@ -467,7 +467,7 @@ If it's not a http client error, then log it.
 
 ## THHandler : <code>function</code>
 **Kind**: global typedef  
-**Prototype**: async (request: Request) => Response  
+**Prototype**: `async (request: Request) => Response`  
 **See**
 
 - [Request](#Request)
