@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 const {Response, listen, RequestBody} = require('../index')
 
-describe('request', () => {
+describe('Request', () => {
   let server = null
 
   afterEach(() => {
