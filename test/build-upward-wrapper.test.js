@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const {listen, Response, buildUpwardWrapper} = require('../index')
 
-describe('buildDownwardWrapper', () => {
+describe('buildUpwardWrapper', () => {
   let server = null
 
   afterEach(() => {
