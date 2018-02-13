@@ -39,10 +39,10 @@ but if it returns a response, the flow will return right here, and the handlers 
 <dd><p>Build a wrapper which could handle the upward logic.
 Generally it maps response.</p>
 </dd>
-<dt><a href="#compose">compose(...wrappers)</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
+<dt><a href="#compose">compose(...wrappers)</a> ⇒ <code>function</code></dt>
 <dd><p>Compose wrappers</p>
 </dd>
-<dt><a href="#listen">listen()</a> : <code>function</code></dt>
+<dt><a href="#listen">listen(...args)</a> ⇒ <code>function</code></dt>
 <dd><p>Create a http server and listen for connections.</p>
 </dd>
 <dt><a href="#handleErrors">handleErrors([options])</a> ⇒ <code><a href="#THWrapper">THWrapper</a></code></dt>
@@ -203,7 +203,10 @@ and make any needed adjustment to it.
     * [new Response()](#new_Response_new)
     * _instance_
         * [.statusCode](#Response+statusCode) : <code>number</code>
+        * [.statusCode](#Response+statusCode) : <code>number</code>
         * [.headers](#Response+headers) : <code>Object</code>
+        * [.headers](#Response+headers) : <code>Object</code>
+        * [.body](#Response+body) : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
         * [.body](#Response+body) : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
         * [.setHeader(name, value)](#Response+setHeader)
         * [.getHeader(name)](#Response+getHeader) ⇒ <code>string</code> \| <code>Array.&lt;string&gt;</code>
@@ -226,6 +229,10 @@ Status code of this response.
 The range is [100, 600)
 
 **Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+statusCode"></a>
+
+### response.statusCode : <code>number</code>
+**Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="Response+headers"></a>
 
 ### response.headers : <code>Object</code>
@@ -234,11 +241,19 @@ Generally you should use `setHeader` to avoid duplicate headers,
 but if you know what you are doing, you can use this setter to update headers more efficiently.
 
 **Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+headers"></a>
+
+### response.headers : <code>Object</code>
+**Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="Response+body"></a>
 
 ### response.body : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
 Body of this response.
 
+**Kind**: instance property of [<code>Response</code>](#Response)  
+<a name="Response+body"></a>
+
+### response.body : <code>string</code> \| <code>Buffer</code> \| <code>ReadableStream</code>
 **Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="Response+setHeader"></a>
 
@@ -409,26 +424,25 @@ Generally it maps response.
 
 <a name="compose"></a>
 
-## compose(...wrappers) ⇒ [<code>THWrapper</code>](#THWrapper)
+## compose(...wrappers) ⇒ <code>function</code>
 Compose wrappers
 
 **Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| ...wrappers | [<code>Array.&lt;THWrapper&gt;</code>](#THWrapper) | 
+| ...wrappers | <code>function</code> | 
 
 <a name="listen"></a>
 
-## listen() : <code>function</code>
+## listen(...args) ⇒ <code>function</code>
 Create a http server and listen for connections.
 
 **Kind**: global function  
-**Prototype**: `(...args) => (handler: THHandler) => NodeHTTPServer`  
-**See**
 
-- [THHandler](#THHandler)
-- [Node.js server.listen](https://nodejs.org/docs/latest-v8.x/api/http.html#http_server_listen)
+| Param | Description |
+| --- | --- |
+| ...args | the same with that of server.listen of node http package |
 
 <a name="handleErrors"></a>
 

@@ -1,6 +1,6 @@
 # The HTTP (TH)
 
-The way we build HTTP service.
+A toolkit to help build HTTP service.
 
 ## Features
 
